@@ -3,9 +3,6 @@ from pyspark import SparkContext
 
 
 def mapper(line: str) -> tuple[str, tuple[int, int]]:
-    """
-    Returns driver_id, time, earnings
-    """
     parts = line.split(',')
     if len(parts) < 17:
         return None
