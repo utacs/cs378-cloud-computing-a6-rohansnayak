@@ -1,4 +1,6 @@
 import sys
+import os
+import shutil
 from pyspark import SparkContext
 
 
@@ -9,15 +11,15 @@ def seqOp(acc: set, value: str) -> set:
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print("Usage: wordcount <file> <output> ", file=sys.stderr)
+        print("Usage: <file> <output> ", file=sys.stderr)
         sys.exit(-1)
+
+    if os.path.exists(sys.argv[2]):
+        shutil.rmtree(sys.argv[2])
 
     sc = SparkContext(appName="PythonWordCount")
     lines = sc.textFile(sys.argv[1], 1)
     n = 10
-
-    if os.path.exists(sys.argv[2]):
-        shutil.rmtree(sys.argv[2])
 
     counts = lines \
         .map(lambda line: tuple(line.split(',')[:2])) \
