@@ -66,13 +66,12 @@ if __name__ == "__main__":
 #     if len(parts) < 18:
 #         return None
 #     try:
-#         # Extract datetime and surcharge amount and distance
 #         datetime_str = parts[3]
 #         surcharge = float(parts[15])
 #         distance = float(parts[9])
 #         hour = datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S').hour
 #         return hour, (surcharge, distance)
-#     except BaseException:  # pylint: disable=broad-exception-caught
+#     except BaseException:
 #         return None
 
 # def clean_data(x: tuple):
@@ -98,7 +97,7 @@ if __name__ == "__main__":
 #         .filter(clean_data) \
 #         .reduceByKey(reducer) \
 #         .mapValues(lambda i: i[0] / i[1])  # Profit ratio = Surcharge / Distance
-#     top_n = profit_ratio.takeOrdered(n, key=lambda x: -x[1])  # Negate x[1] to get in descending order
+#     top_n = profit_ratio.takeOrdered(n, key=lambda x: -x[1])
 
 #     sc.parallelize(top_n).saveAsTextFile(sys.argv[2])
 #     sc.stop()
