@@ -28,6 +28,9 @@ if __name__ == "__main__":
         print("Usage: <file> <output> ", file=sys.stderr)
         sys.exit(-1)
 
+    if os.path.exists(sys.argv[2]):
+        shutil.rmtree(sys.argv[2])
+
     sc = SparkContext(appName="PythonWordCount")
     lines = sc.textFile(sys.argv[1], 1)
     n = 10

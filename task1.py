@@ -16,6 +16,9 @@ if __name__ == "__main__":
     lines = sc.textFile(sys.argv[1], 1)
     n = 10
 
+    if os.path.exists(sys.argv[2]):
+        shutil.rmtree(sys.argv[2])
+
     counts = lines \
         .map(lambda line: tuple(line.split(',')[:2])) \
         .aggregateByKey(set(), seqOp, lambda a, b: a.union(b)) \
