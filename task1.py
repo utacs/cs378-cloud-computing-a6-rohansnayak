@@ -1,6 +1,3 @@
-import sys
-import os
-import shutil
 from pyspark import SparkContext
 
 
@@ -10,15 +7,8 @@ def seqOp(acc: set, value: str) -> set:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: <file> <output> ", file=sys.stderr)
-        sys.exit(-1)
-
-    if os.path.exists(sys.argv[2]):
-        shutil.rmtree(sys.argv[2])
-
     sc = SparkContext(appName="PythonWordCount")
-    lines = sc.textFile(sys.argv[1], 1)
+    lines = sc.textFile("gs://cs378/taxi-data-sorted-large.csv.bz2", 1)
     n = 10
 
     counts = lines \
@@ -27,7 +17,6 @@ if __name__ == "__main__":
         .mapValues(len)
     top_n = counts.takeOrdered(n, key=lambda x: -x[1])  # Negate x[1] to get in descending order
 
-    sc.parallelize(top_n).saveAsTextFile(sys.argv[2])
     sc.stop()
 
     # Print top_n
